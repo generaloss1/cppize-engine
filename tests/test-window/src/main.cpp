@@ -1,7 +1,7 @@
-#include <iostream>
-#include "pize/core/io/window.cpp"
-#include "pize/core/pize.cpp"
-#include "pize/core/context/context_listener.cpp"
+#include "iostream"
+#include "pize-core/io/window.cpp"
+#include "pize-core/pize.cpp"
+#include "pize-core/context/context_listener.cpp"
 
 using namespace std;
 

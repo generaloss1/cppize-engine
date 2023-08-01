@@ -7,7 +7,7 @@ add_subdirectory(
 )
 
 include_directories(
-        ${CMAKE_SOURCE_DIR}/src
+        ${CMAKE_SOURCE_DIR}/core/src
         ${CMAKE_SOURCE_DIR}/lib/glad/include
         ${CMAKE_SOURCE_DIR}/lib/glfw-3.3.8/deps
         ${CMAKE_SOURCE_DIR}/lib/glfw-3.3.8/include
@@ -19,7 +19,7 @@ add_executable(${PROJECT_NAME}
         lib/glad/src/glad.c
         lib/stb/stb_image.h
 
-        src/pize/test/main.cpp
+        tests/test-window/src/main.cpp
 )
 
 target_link_libraries(${PROJECT_NAME}

@@ -1,7 +1,7 @@
 #ifndef CORE_PIZE
 #define CORE_PIZE
 
-#include "pize/core/context/context.cpp"
+#include "pize-core/context/context.cpp"
 
 class Pize{
 private:

@@ -1,9 +1,9 @@
 #ifndef CORE_CONTEXT_CONTEXT
 #define CORE_CONTEXT_CONTEXT
 
-#include "pize/core/context/context_listener.cpp"
-#include "pize/core/io/keyboard.cpp"
-#include "pize/core/io/window.cpp"
+#include "context_listener.cpp"
+#include "pize-core/io/keyboard.cpp"
+#include "pize-core/io/window.cpp"
 
 using namespace std;
 
