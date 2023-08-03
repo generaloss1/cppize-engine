@@ -2,6 +2,7 @@
 #define PIZE_CORE_GRAPHICS_GL_TYPE
 
 #include "glad/glad.h"
+#include "map"
 
 enum Type{
     FLOAT                        = GL_FLOAT                       ,   // 4 Bytes
@@ -21,20 +22,25 @@ enum Type{
     UNSIGNED_INT_10F_11F_11F_REV = GL_UNSIGNED_INT_10F_11F_11F_REV    // 4 Bytes
 };
 
+static map<Type, char> sizeMap = {
+    {FLOAT                       , 4},
+    {INT                         , 4},
+    {UNSIGNED_INT                , 4},
+    {HALF_FLOAT                  , 2},
+    {SHORT                       , 2},
+    {UNSIGNED_SHORT              , 2},
+    {BOOL                        , 1},
+    {BYTE                        , 1},
+    {UNSIGNED_BYTE               , 1},
+    {DOUBLE                      , 8},
+    {FIXED                       , 4},
+    {INT_2_10_10_10_REV          , 4},
+    {UNSIGNED_INT_2_10_10_10_REV , 4},
+    {UNSIGNED_INT_10F_11F_11F_REV, 4}
+};
+
 static char sizeofType(const Type *type){
-    switch(*type){
-        case FLOAT: case INT: case UNSIGNED_INT:
-        case GL_FIXED: case GL_INT_2_10_10_10_REV: case GL_UNSIGNED_INT_2_10_10_10_REV: case GL_UNSIGNED_INT_10F_11F_11F_REV:
-            return 4;
-        case HALF_FLOAT: case SHORT: case UNSIGNED_SHORT:
-            return 2;
-        case BOOL: case BYTE: case UNSIGNED_BYTE:
-            return 1;
-        case DOUBLE:
-            return 8;
-        default:
-            return 0;
-    }
+    return sizeMap[*type];
 }
 
 #endif

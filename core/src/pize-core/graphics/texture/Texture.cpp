@@ -17,8 +17,7 @@ private:
     int wrapT = GL_CLAMP_TO_BORDER;
     int wrapR = GL_CLAMP_TO_BORDER;
     int mipmapLevels = 0;
-    Format format = RGBA;
-    SizedFormat formatSized = RGBA8;
+    SizedFormat format = RGBA8;
     Type type = UNSIGNED_BYTE;
 
     Pixmap *pixmap = nullptr;
@@ -32,9 +31,10 @@ public:
         update();
     }
 
-    void dispose(){
-        glDeleteTextures(1, &texture);
-        pixmap->dispose();
+
+    void bind(int num){
+        glActiveTexture(GL_TEXTURE0 + num);
+        bind();
     }
 
     void bind(){
@@ -43,6 +43,11 @@ public:
 
     static void unbind(){
         glBindTexture(GL_TEXTURE_2D, 0);
+    }
+
+    void dispose(){
+        glDeleteTextures(1, &texture);
+        pixmap->dispose();
     }
 
 private:
@@ -58,8 +63,8 @@ private:
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL,      mipmapLevels);
 
         glTexImage2D(
-                GL_TEXTURE_2D, 0, formatSized, *pixmap->getWidth(), *pixmap->getHeight(),
-                0, format, type, pixmap->getData()
+                GL_TEXTURE_2D, 0, format, *pixmap->getWidth(), *pixmap->getHeight(),
+                0, getBaseFormat(&format), type, pixmap->getData()
         );
 
         glGenerateMipmap(GL_TEXTURE_2D);

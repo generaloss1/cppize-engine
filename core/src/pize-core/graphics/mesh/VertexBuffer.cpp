@@ -2,6 +2,7 @@
 #define PIZE_CORE_GRAPHICS_MESH_VERTEX_BUFFER
 
 #include "glad/glad.h"
+#include "vector"
 #include "pize-core/graphics/mesh/VertexAttr.cpp"
 #include "pize-core/graphics/gl/BufferUsage.cpp"
 
@@ -9,8 +10,8 @@ class VertexBuffer{
 private:
 
     GLuint buffer;
-    int vertexSize, vertexBytes;
-    long dataSize;
+    int vertexSizeCount, vertexSizeBytes;
+    int dataSizeCount;
 
 public:
 
@@ -19,23 +20,24 @@ public:
         bind();
     }
 
-    void enableAttributes(char attrNum, VertexAttr attributes[]){
-        for(char i = 0; i < attrNum; i++){
-            VertexAttr attribute = attributes[i];
-            vertexSize += attribute.count;
-            vertexBytes += attribute.count * sizeofType(&attribute.type);
+    void enableAttributes(vector<VertexAttr> attributes){
+        vertexSizeCount = 0;
+        vertexSizeBytes = 0;
+
+        for(auto attribute: attributes){
+            vertexSizeCount += attribute.count;
+            vertexSizeBytes += attribute.count * sizeofType(&attribute.type);
         }
 
         int pointer = 0;
-        for(char i = 0; i < attrNum; i++){
+        for(int i = 0; i < attributes.size(); i++){
             const VertexAttr attribute = attributes[i];
 
             const int count = attribute.count;
-            const Type *type = &attribute.type;
-            const char typeSize = sizeofType(type);
-            cout << "size " << int(i) << " : " << int(typeSize) << endl;
+            const Type type = attribute.type;
+            const char typeSize = sizeofType(&type);
 
-            glVertexAttribPointer(i, count, *type, attribute.normalize, vertexSize * typeSize, &pointer);
+            glVertexAttribPointer(i, count, type, attribute.normalize, vertexSizeCount * typeSize, reinterpret_cast<const void *>(pointer));
             glEnableVertexAttribArray(i);
 
             pointer += count * typeSize;
@@ -43,19 +45,19 @@ public:
     }
 
     int *getVertexSize(){
-        return &vertexSize;
+        return &vertexSizeCount;
     }
 
     int *getVertexBytes(){
-        return &vertexBytes;
+        return &vertexSizeBytes;
     }
 
-    long *getDataSize(){
-        return &dataSize;
+    int *getDataSize(){
+        return &dataSizeCount;
     }
 
-    long getVerticesNum(){
-        return dataSize / vertexSize;
+    int getVerticesNum() const{
+        return dataSizeCount / vertexSizeCount;
     }
 
 
@@ -67,40 +69,33 @@ public:
         glDeleteBuffers(1, &buffer);
     }
 
-
     static void unbind(){
         glBindBuffer(GL_ARRAY_BUFFER, 0);
     }
 
 
-    void setData(float data[], BufferUsage usage){
-        dataSize = sizeof(&data) / 4;
+    void setData(const vector<GLfloat>& vertices, BufferUsage usage){
+        dataSizeCount = vertices.size();
         bind();
-        glBufferData(GL_ARRAY_BUFFER, dataSize, data, usage);
+        glBufferData(GL_ARRAY_BUFFER, dataSizeCount * 4, vertices.data(), usage);
     }
 
-    void setData(double data[], BufferUsage usage){
-        dataSize = sizeof(&data) / 8;
+    void setData(const vector<GLdouble>& vertices, BufferUsage usage){
+        dataSizeCount = vertices.size();
         bind();
-        glBufferData(GL_ARRAY_BUFFER, dataSize, data, usage);
+        glBufferData(GL_ARRAY_BUFFER, dataSizeCount * 8, vertices.data(), usage);
     }
 
-    void setData(int data[], BufferUsage usage){
-        dataSize = sizeof(&data) / 4;
+    void setData(const vector<GLint>& vertices, BufferUsage usage){
+        dataSizeCount = vertices.size();
         bind();
-        glBufferData(GL_ARRAY_BUFFER, dataSize, data, usage);
+        glBufferData(GL_ARRAY_BUFFER, dataSizeCount * 4, vertices.data(), usage);
     }
 
-    void setData(short data[], BufferUsage usage){
-        dataSize = sizeof(&data) / 2;
+    void setData(const vector<GLshort>& vertices, BufferUsage usage){
+        dataSizeCount = vertices.size();
         bind();
-        glBufferData(GL_ARRAY_BUFFER, dataSize, data, usage);
-    }
-
-    void setData(long data[], BufferUsage usage){
-        dataSize = sizeof(&data) / 8;
-        bind();
-        glBufferData(GL_ARRAY_BUFFER, dataSize, data, usage);
+        glBufferData(GL_ARRAY_BUFFER, dataSizeCount * 4, vertices.data(), usage);
     }
 
 };

@@ -18,41 +18,40 @@ public:
     }
 
 
-    void drawArrays(int verticesNum, Primitive mode){
+    void drawArrays(int verticesNum, Primitive mode) const{
         bind();
         glDrawArrays(mode, 0, verticesNum);
     }
 
-    void drawArrays(int verticesNum){
+    void drawArrays(int verticesNum) const{
         drawArrays(verticesNum, TRIANGLES);
     }
 
 
-    void drawElements(int indicesNum, Primitive mode, Type indicesType){
+    void drawElements(int indicesNum, Primitive mode, Type indicesType) const{
         bind();
-        glDrawElements(mode, indicesNum, indicesType, 0);
+        glDrawElements(mode, indicesNum, indicesType, nullptr);
     }
 
-    void drawElements(int indicesNum, Primitive mode){
+    void drawElements(int indicesNum, Primitive mode) const{
         drawElements(indicesNum, mode, UNSIGNED_INT);
     }
 
-    void drawElements(int indicesNum){
+    void drawElements(int indicesNum) const{
         drawElements(indicesNum, TRIANGLES);
     }
 
 
-    void bind(){
+    void bind() const{
         glBindVertexArray(array);
+    }
+
+    static void unbind(){
+        glBindVertexArray(0);
     }
 
     void dispose(){
         glDeleteVertexArrays(1, &array);
-    }
-
-
-    static void unbind(){
-        glBindVertexArray(0);
     }
 
 };

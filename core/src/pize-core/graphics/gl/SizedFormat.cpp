@@ -2,6 +2,8 @@
 #define PIZE_CORE_GRAPHICS_GL_SIZED_FORMAT
 
 #include "glad/glad.h"
+#include "map"
+#include "pize-core/graphics/gl/Format.cpp"
 
 enum SizedFormat{
 
@@ -107,5 +109,95 @@ enum SizedFormat{
     COMPRESSED_SRGB_ALPHA_BPTC_UNORM   = GL_COMPRESSED_SRGB_ALPHA_BPTC_UNORM
 
 };
+
+static map<SizedFormat, Format> baseFormatMap = {
+        {R8	           , RED },
+        {R8_SNORM	   , RED },
+        {R16	       , RED },
+        {R16_SNORM	   , RED },
+        {R8I	       , RED },
+        {R8UI	       , RED },
+        {R16I	       , RED },
+        {R16UI	       , RED },
+        {R32I	       , RED },
+        {R32UI	       , RED },
+        {R16F	       , RED },
+        {R32F	       , RED },
+        {RG8	       , RG  },
+        {RG8_SNORM	   , RG  },
+        {RG16	       , RG  },
+        {RG16_SNORM	   , RG  },
+        {RG16F	       , RG  },
+        {RG32F	       , RG  },
+        {RG8I	       , RG  },
+        {RG8UI	       , RG  },
+        {RG16I	       , RG  },
+        {RG16UI	       , RG  },
+        {RG32I	       , RG  },
+        {RG32UI	       , RG  },
+        {R3_G3_B2	   , RGB },
+        {RGB4	       , RGB },
+        {RGB5	       , RGB },
+        {RGB8	       , RGB },
+        {RGB8_SNORM	   , RGB },
+        {RGB10	       , RGB },
+        {RGB12	       , RGB },
+        {RGB16	       , RGB },
+        {RGB16_SNORM   , RGB },
+        {SRGB8	       , RGB },
+        {RGB16F	       , RGB },
+        {RGB32F	       , RGB },
+        {R11F_G11F_B10F, RGB },
+        {RGB9_E5	   , RGB },
+        {RGB8I	       , RGB },
+        {RGB8UI	       , RGB },
+        {RGB16I	       , RGB },
+        {RGB16UI	   , RGB },
+        {RGB32I	       , RGB },
+        {RGB32UI	   , RGB },
+        {RGB10_A2UI    , RGB },
+        {RGBA2	       , RGBA},
+        {RGBA4	       , RGBA},
+        {RGB5_A1	   , RGBA},
+        {RGBA8	       , RGBA},
+        {RGBA8_SNORM   , RGBA},
+        {RGB10_A2 	   , RGBA},
+        {RGBA12	       , RGBA},
+        {RGBA16	       , RGBA},
+        {RGBA16_SNORM  , RGBA},
+        {SRGB8_ALPHA8  , RGBA},
+        {RGBA16F	   , RGBA},
+        {RGBA32F	   , RGBA},
+        {RGBA8I	       , RGBA},
+        {RGBA8UI	   , RGBA},
+        {RGBA16I	   , RGBA},
+        {RGBA16UI	   , RGBA},
+        {RGBA32I	   , RGBA},
+        {RGBA32UI	   , RGBA},
+        {DEPTH_COMPONENT16 , DEPTH_COMPONENT},
+        {DEPTH_COMPONENT24 , DEPTH_COMPONENT},
+        {DEPTH_COMPONENT32 , DEPTH_COMPONENT},
+        {DEPTH_COMPONENT32F, DEPTH_COMPONENT},
+        {DEPTH24_STENCIL8  , DEPTH_STENCIL  },
+        {DEPTH32F_STENCIL8 , DEPTH_STENCIL  },
+        {COMPRESSED_RED	                   , RED },
+        {COMPRESSED_RED_RGTC1	           , RED },
+        {COMPRESSED_SIGNED_RED_RGTC1       , RED },
+        {COMPRESSED_RG	                   , RG  },
+        {COMPRESSED_RG_RGTC2	           , RG  },
+        {COMPRESSED_SIGNED_RG_RGTC2        , RG  },
+        {COMPRESSED_RGB	                   , RGB },
+        {COMPRESSED_RGB_BPTC_SIGNED_FLOAT  , RGB },
+        {COMPRESSED_RGB_BPTC_UNSIGNED_FLOAT, RGB },
+        {COMPRESSED_SRGB	               , RGB },
+        {COMPRESSED_RGBA	               , RGBA},
+        {COMPRESSED_RGBA_BPTC_UNORM        , RGBA},
+        {COMPRESSED_SRGB_ALPHA             , RGBA},
+        {COMPRESSED_SRGB_ALPHA_BPTC_UNORM  , RGB }
+};
+
+static Format getBaseFormat(const SizedFormat *sizedFormat){
+    return baseFormatMap[*sizedFormat];
+}
 
 #endif

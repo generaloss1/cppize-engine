@@ -1,14 +1,15 @@
 #ifndef PIZE_CORE_CONTEXT_CONTEXT
 #define PIZE_CORE_CONTEXT_CONTEXT
 
+#include <vector>
 #include "ContextListener.cpp"
 #include "pize-core/io/Keyboard.cpp"
-#include "pize-core/io/Window.cpp"
+#include "pize-core/io/window/Window.cpp"
 #include "pize-core/util/time/FpsCounter.cpp"
 
 using namespace std;
 
-class Context{
+class Context: Resizable{
 private:
 
     Window *window;
@@ -17,10 +18,14 @@ private:
 
     FpsCounter *fpsCounter;
 
+    ContextListener *listener;
+
 public:
 
     Context(const char *title, int width, int height){
         this->window = new Window(title, width, height, true, true, 1);
+        this->window->registerResizeCallback(this);
+
         this->keyboard = new Keyboard(window);
         this->exitRequest = false;
 
@@ -28,26 +33,25 @@ public:
     }
 
     void run(ContextListener *listener){
+        this->listener = listener;
         window->show();
 
         while(!window->shouldClose() && !exitRequest)
-            render(listener);
-
+            render();
         window->hide();
         listener->dispose();
-        window->dispose();
 
+        window->dispose();
         glfwTerminate();
     }
 
-    void render(ContextListener *listener){
+    void render(){
         fpsCounter->count();
-        glfwPollEvents();
-
         listener->render();
 
         keyboard->reset();
         window->swapBuffers();
+        glfwPollEvents();
     }
 
 
@@ -66,6 +70,13 @@ public:
 
     Window *getWindow(){
         return window;
+    }
+
+private:
+
+    void resize(int width, int height) override{
+        listener->resize(width, height);
+        glViewport(0, 0, width, height);
     }
 
 };

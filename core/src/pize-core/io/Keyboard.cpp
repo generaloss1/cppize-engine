@@ -1,7 +1,7 @@
 #ifndef PIZE_CORE_IO_KEYBOARD
 #define PIZE_CORE_IO_KEYBOARD
 
-#include "Window.cpp"
+#include "pize-core/io/window/Window.cpp"
 
 using namespace std;
 
@@ -16,8 +16,8 @@ class Keyboard{
 public:
 
     Keyboard(Window *window){
-        glfwSetWindowUserPointer(window->getGLFWWindow(), this);
-        glfwSetKeyCallback(window->getGLFWWindow(), staticKeyCallback);
+        glfwSetWindowUserPointer(window->getWindowID(), this);
+        glfwSetKeyCallback(window->getWindowID(), staticKeyCallback);
     }
 
 

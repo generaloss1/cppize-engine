@@ -4,15 +4,17 @@
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
 #include <iostream>
+#include "pize-core/io/window/Resizable.cpp"
 
 using namespace std;
 
 class Window{
 
-    GLFWwindow *glfwWindow;
-    const char *title;
+    GLFWwindow* window;
+    const char* title;
     int width, height, x, y;
     bool resizable, focused;
+    vector<Resizable*> resizeCallbacks;
 
 public:
 
@@ -35,20 +37,20 @@ public:
         glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
         #endif
 
-        glfwWindow = glfwCreateWindow(width, height, title, NULL, NULL);
-        if(glfwWindow == NULL){
+        window = glfwCreateWindow(width, height, title, NULL, NULL);
+        if(window == NULL){
             cout << "Failed to create GLFW window" << endl;
             glfwTerminate();
             return;
         }
 
-        glfwMakeContextCurrent(glfwWindow);
+        glfwMakeContextCurrent(window);
         glfwSwapInterval(vsync ? 1 : 0);
 
-        glfwSetWindowUserPointer(glfwWindow, this);
-        glfwSetWindowFocusCallback(glfwWindow, staticFocusCallback);
-        glfwSetWindowSizeCallback(glfwWindow, staticSizeCallback);
-        glfwSetWindowPosCallback(glfwWindow, staticPosCallback);
+        glfwSetWindowUserPointer(window, this);
+        glfwSetWindowFocusCallback(window, staticFocusCallback);
+        glfwSetWindowSizeCallback(window, staticSizeCallback);
+        glfwSetWindowPosCallback(window, staticPosCallback);
 
         if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress)){
             cout << "Failed to initialize GLAD" << endl;
@@ -59,11 +61,11 @@ public:
 
 
     bool shouldClose(){
-        return glfwWindowShouldClose(glfwWindow);
+        return glfwWindowShouldClose(window);
     }
 
     void swapBuffers(){
-        glfwSwapBuffers(glfwWindow);
+        glfwSwapBuffers(window);
     }
 
 
@@ -88,23 +90,35 @@ public:
     }
 
     void show(){
-        glfwShowWindow(glfwWindow);
+        glfwShowWindow(window);
     }
 
     void hide(){
-        glfwHideWindow(glfwWindow);
+        glfwHideWindow(window);
     }
 
 
-    GLFWwindow *getGLFWWindow(){
-        return glfwWindow;
+    void registerResizeCallback(Resizable *resizeCallback){
+        resizeCallbacks.emplace_back(resizeCallback);
+    }
+
+
+    GLFWwindow *getWindowID(){
+        return window;
     }
 
     void dispose(){
-        glfwDestroyWindow(glfwWindow);
+        glfwDestroyWindow(window);
     }
 
 private:
+
+    void sizeCallback(int width, int height){
+        this->width = width;
+        this->height = height;
+        for(Resizable* resizeCallback: resizeCallbacks)
+            resizeCallback->resize(width, height);
+    }
 
     static void staticFocusCallback(GLFWwindow* window, int focused){
         auto* handler = reinterpret_cast<Window*>(glfwGetWindowUserPointer(window));
@@ -114,10 +128,8 @@ private:
 
     static void staticSizeCallback(GLFWwindow* window, int width, int height){
         auto* handler = reinterpret_cast<Window*>(glfwGetWindowUserPointer(window));
-        if(handler){
-            handler->width = width;
-            handler->height = height;
-        }
+        if(handler)
+            handler->sizeCallback(width, height);
     }
 
     static void staticPosCallback(GLFWwindow* window, int x, int y){
