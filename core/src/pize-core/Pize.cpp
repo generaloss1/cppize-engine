@@ -1,7 +1,7 @@
-#ifndef CORE_PIZE
-#define CORE_PIZE
+#ifndef PIZE_CORE_PIZE
+#define PIZE_CORE_PIZE
 
-#include "pize-core/context/context.cpp"
+#include "pize-core/context/Context.cpp"
 
 class Pize{
 private:
@@ -15,7 +15,6 @@ public:
         ctx = new Context(title, width, height);
     }
 
-
     Keyboard *keyboard(){
         return ctx->getKeyboard();
     }
@@ -24,13 +23,17 @@ public:
         return ctx->getWindow();
     }
 
-
     void run(ContextListener *listener){
         ctx->run(listener);
     }
 
+
     void exit(){
         ctx->exit();
+    }
+
+    int getFps(){
+        return ctx->getFps();
     }
 
 } Pize;

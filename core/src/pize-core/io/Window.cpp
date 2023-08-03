@@ -1,5 +1,5 @@
-#ifndef CORE_IO_WINDOW
-#define CORE_IO_WINDOW
+#ifndef PIZE_CORE_IO_WINDOW
+#define PIZE_CORE_IO_WINDOW
 
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"

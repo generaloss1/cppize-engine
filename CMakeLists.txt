@@ -19,7 +19,7 @@ add_executable(${PROJECT_NAME}
         lib/glad/src/glad.c
         lib/stb/stb_image.h
 
-        tests/test-window/src/main.cpp
+        tests/test-window/src/Main.cpp
 )
 
 target_link_libraries(${PROJECT_NAME}

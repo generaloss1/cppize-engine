@@ -1,0 +1,7 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Pizza-Engine-Cpp" type="CMakeRunConfiguration" factoryName="Application" singleton="false" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" WORKING_DIR="file://$PROJECT_DIR$/resources" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Pizza_Engine_Cpp" TARGET_NAME="Pizza_Engine_Cpp" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="Pizza_Engine_Cpp" RUN_TARGET_NAME="Pizza_Engine_Cpp">
+    <method v="2">
+      <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+    </method>
+  </configuration>
+</component>

@@ -1,7 +1,7 @@
-#ifndef CORE_IO_KEYBOARD
-#define CORE_IO_KEYBOARD
+#ifndef PIZE_CORE_IO_KEYBOARD
+#define PIZE_CORE_IO_KEYBOARD
 
-#include "window.cpp"
+#include "Window.cpp"
 
 using namespace std;
 

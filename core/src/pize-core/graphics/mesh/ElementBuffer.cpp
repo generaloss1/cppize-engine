@@ -1,0 +1,8 @@
+#ifndef PIZE_CORE_GRAPHICS_MESH_ELEMENT_BUFFER
+#define PIZE_CORE_GRAPHICS_MESH_ELEMENT_BUFFER
+
+class ElementBuffer{
+
+};
+
+#endif
