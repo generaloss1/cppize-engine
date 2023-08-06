@@ -54,7 +54,7 @@ public:
     }
 
 
-    void putUniform(const string uniformName){
+    void findUniform(const string uniformName){
         const int index = glGetUniformLocation(shader, (&uniformName)->c_str());
         if(index == -1)
             return;

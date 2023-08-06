@@ -15,10 +15,12 @@ public:
     Pixmap();
 
     Pixmap(const char *filepath){
-        stbi_set_flip_vertically_on_load(true);
-        data = stbi_load(filepath, &width, &height, &channels, 0);
+        // stbi_set_flip_vertically_on_load(true);
+        data = stbi_load(filepath, &width, &height, &channels, 4);
         if(!data)
             cout << "Failed to load pixmap '" << filepath << "'" << endl;
+        else
+            cout << "Loaded texture " << filepath << endl;
     }
 
     unsigned char *getData(){

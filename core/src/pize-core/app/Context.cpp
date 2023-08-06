@@ -2,7 +2,7 @@
 #define PIZE_CORE_CONTEXT_CONTEXT
 
 #include <vector>
-#include "ContextListener.cpp"
+#include "AppAdapter.cpp"
 #include "pize-core/io/Keyboard.cpp"
 #include "pize-core/io/window/Window.cpp"
 #include "pize-core/util/time/FpsCounter.cpp"
@@ -18,13 +18,12 @@ private:
 
     FpsCounter *fpsCounter;
 
-    ContextListener *listener;
+    AppAdapter *listener;
 
 public:
 
     Context(const char *title, int width, int height){
-        this->window = new Window(title, width, height, true, true, 1);
-        this->window->registerResizeCallback(this);
+        this->window = new Window(title, width, height, true, false, 1);
 
         this->keyboard = new Keyboard(window);
         this->exitRequest = false;
@@ -32,8 +31,9 @@ public:
         this->fpsCounter = new FpsCounter();
     }
 
-    void run(ContextListener *listener){
+    void run(AppAdapter *listener){
         this->listener = listener;
+        this->window->registerResizeCallback(this);
         window->show();
 
         while(!window->shouldClose() && !exitRequest)
@@ -76,7 +76,7 @@ private:
 
     void resize(int width, int height) override{
         listener->resize(width, height);
-        glViewport(0, 0, width, height);
+        // glViewport(0, 0, width, height);
     }
 
 };

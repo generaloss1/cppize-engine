@@ -1,5 +1,5 @@
 #include "pize-core/Pize.cpp"
-#include "pize-core/context/ContextListener.cpp"
+#include "pize-core/app/AppAdapter.cpp"
 
 #include "pize-core/graphics/texture/Texture.cpp"
 #include "pize-core/graphics/mesh/VertexBuffer.cpp"
@@ -11,7 +11,7 @@
 
 using namespace std;
 
-class Game : public ContextListener{
+class Game : public AppAdapter{
 private:
 
     Texture *texture;
@@ -24,26 +24,26 @@ private:
 public:
 
     Game(){
-        texture = new Texture("116-0.png");
+        texture = new Texture("Screenshot 2023 28-Jul 15-51-03.png");
 
         vao = new VertexArray();
 
         vbo = new VertexBuffer();
         vbo->enableAttributes(vector<VertexAttr> { VertexAttr(2, FLOAT), VertexAttr(2, FLOAT), VertexAttr(4, FLOAT) });
         vbo->setData(vector<GLfloat> {
-             500, 500,  0, 1,  1, 1, 1, 1,  // 0
-             500, 0  ,  0, 0,  1, 1, 1, 1,  // 1
-             0  , 0  ,  1, 0,  1, 1, 1, 1,  // 2
+             1280, 720,  1, 0,  1, 1, 1, 1,  // 0
+             1280, 0  ,  1, 1,  1, 1, 1, 1,  // 1
+             0   , 0  ,  0, 1,  1, 1, 1, 1,  // 2
 
-             0  , 0  ,  1, 0,  1, 1, 1, 1,  // 2
-             0  , 500,  1, 1,  1, 1, 1, 1,  // 3
-             500, 500,  0, 1,  1, 1, 1, 1,  // 0
-        }, STATIC_DRAW);
+             0   , 0  ,  0, 1,  1, 1, 1, 1,  // 2
+             0   , 720,  0, 0,  1, 1, 1, 1,  // 3
+             1280, 720,  1, 0,  1, 1, 1, 1,  // 0
+        }, DYNAMIC_DRAW);
 
         shader = new Shader("shader/shader.vert", "shader/shader.frag");
-        shader->putUniform("u_projection");
-        shader->putUniform("u_view");
-        shader->putUniform("u_texture");
+        shader->findUniform("u_projection");
+        shader->findUniform("u_view");
+        shader->findUniform("u_texture");
 
         projectionMat = (new Matrix4f())->toOrthographic(0, 0, 1280, 720);
         viewMat = new Matrix4f();
@@ -63,11 +63,20 @@ public:
 
         vao->drawArrays(vbo->getVerticesNum());
 
-        cout << "fps: " << Pize.getFps() << endl;
+        // cout << "fps: " << Pize.getFps() << endl;
     }
 
     void resize(int width, int height) override{
-        projectionMat->toOrthographic(0, 0, float(width), float(height));
+        //projectionMat->toOrthographic(0, 0, float(width), float(height));
+        //vbo->setData(vector<GLfloat> {
+        //        float(width), float(height),  1, 0,  1, 1, 1, 1,  // 0
+        //        float(width), 0            ,  1, 1,  1, 1, 1, 1,  // 1
+        //        0           , 0            ,  0, 1,  1, 1, 1, 1,  // 2
+
+        //        0           , 0            ,  0, 1,  1, 1, 1, 1,  // 2
+        //        0           , float(height),  0, 0,  1, 1, 1, 1,  // 3
+        //        float(width), float(height),  1, 0,  1, 1, 1, 1,  // 0
+        //}, DYNAMIC_DRAW);
     }
 
     void dispose() override{
@@ -80,7 +89,7 @@ public:
 };
 
 int main(){
-    Pize.create("My Window", 1280, 720);
+    Pize.create("Window", 1280, 720);
     Pize.run(new Game());
 
     return 0;

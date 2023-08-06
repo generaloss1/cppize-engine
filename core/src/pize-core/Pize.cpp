@@ -1,7 +1,7 @@
 #ifndef PIZE_CORE_PIZE
 #define PIZE_CORE_PIZE
 
-#include "pize-core/context/Context.cpp"
+#include "pize-core/app/Context.cpp"
 
 class Pize{
 private:
@@ -25,7 +25,7 @@ public:
         return ctx->getWindow();
     }
 
-    void run(ContextListener *listener){
+    void run(AppAdapter *listener){
         ctx->run(listener);
     }
 

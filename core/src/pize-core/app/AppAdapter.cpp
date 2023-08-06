@@ -1,7 +1,7 @@
 #ifndef PIZE_CORE_CONTEXT_CONTEXT_LISTENER
 #define PIZE_CORE_CONTEXT_CONTEXT_LISTENER
 
-class ContextListener{
+class AppAdapter{
 public:
 
     virtual void render() = 0;

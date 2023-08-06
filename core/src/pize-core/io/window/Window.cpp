@@ -14,7 +14,8 @@ class Window{
     const char* title;
     int width, height, x, y;
     bool resizable, focused;
-    vector<Resizable*> resizeCallbacks;
+public:
+    Resizable* resizeCallback;
 
 public:
 
@@ -52,7 +53,7 @@ public:
         glfwSetWindowSizeCallback(window, staticSizeCallback);
         glfwSetWindowPosCallback(window, staticPosCallback);
 
-        if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress)){
+        if(!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress)){
             cout << "Failed to initialize GLAD" << endl;
             glfwTerminate();
             return;
@@ -99,7 +100,7 @@ public:
 
 
     void registerResizeCallback(Resizable *resizeCallback){
-        resizeCallbacks.emplace_back(resizeCallback);
+        this->resizeCallback = resizeCallback;
     }
 
 
@@ -116,8 +117,7 @@ private:
     void sizeCallback(int width, int height){
         this->width = width;
         this->height = height;
-        for(Resizable* resizeCallback: resizeCallbacks)
-            resizeCallback->resize(width, height);
+        resizeCallback->resize(width, height);
     }
 
     static void staticFocusCallback(GLFWwindow* window, int focused){
